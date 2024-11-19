@@ -1,12 +1,15 @@
-import Sidebar from '../components/Sidebar';
+import classNames from 'classnames/bind';
+
+import styles from './SidebarOnly.module.scss';
+import Sidebar from '~/Layouts/components/Sidebar';
+
+const cx = classNames.bind(styles);
 
 const DefaultLayout = ({ children }) => {
   return (
-    <div>
+    <div className={cx('wrapper')}>
       <Sidebar />
-      <div>
-        <div>{children}</div>
-      </div>
+      <div className={cx('content')}>{children}</div>
     </div>
   );
 };
