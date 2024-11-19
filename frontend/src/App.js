@@ -5,7 +5,12 @@ import { DefaultLayout } from '~/Layouts';
 
 function App() {
   return (
-    <Router>
+    <Router
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}
+    >
       <div className="App">
         <Routes>
           {publicRoutes.map((route, index) => {
