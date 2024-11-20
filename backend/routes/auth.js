@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
 
 router.post('/signup', (req, res) => {
   const { name, email, password } = req.body;
@@ -51,7 +52,14 @@ router.post('/login', (req, res) => {
       }
       bcrypt.compare(password, savedUser.password).then((doMatch) => {
         if (doMatch) {
-          res.json({ message: 'login successful' });
+          // res.json({ message: 'login successful' });
+          const token = jwt.sign(
+            {
+              _id: savedUser._id,
+            },
+            'asdf',
+          );
+          res.json({ token });
         } else {
           return res.status(422).json({ error: 'Invalid email or password' });
         }
