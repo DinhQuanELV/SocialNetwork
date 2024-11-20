@@ -39,4 +39,27 @@ router.post('/signup', (req, res) => {
     });
 });
 
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(422).json({ error: 'Please provide email or password' });
+  }
+  User.findOne({ email: email })
+    .then((savedUser) => {
+      if (!savedUser) {
+        return res.status(422).json({ error: 'Invalid email or password' });
+      }
+      bcrypt.compare(password, savedUser.password).then((doMatch) => {
+        if (doMatch) {
+          res.json({ message: 'login successful' });
+        } else {
+          return res.status(422).json({ error: 'Invalid email or password' });
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = router;
