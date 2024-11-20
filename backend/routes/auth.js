@@ -7,10 +7,6 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 const requireLogin = require('../middleware/requireLogin');
 
-router.get('/protected', requireLogin, (req, res) => {
-  res.send('wassup user');
-});
-
 router.post('/signup', (req, res) => {
   const { name, email, password } = req.body;
   if (!email || !password || !name) {
