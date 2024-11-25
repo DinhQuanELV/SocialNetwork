@@ -9,9 +9,9 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const postData = (e) => {
+  const handleSignup = (e) => {
     e.preventDefault();
     fetch('/signup', {
       method: 'POST',
@@ -62,7 +62,7 @@ const Signup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className={cx('btn')} type="submit" onClick={postData}>
+        <button className={cx('btn')} type="submit" onClick={handleSignup}>
           Sign up
         </button>
       </form>

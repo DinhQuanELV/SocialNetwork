@@ -8,9 +8,9 @@ const cx = classNames.bind(styles);
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const postData = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     fetch('/login', {
       method: 'POST',
@@ -28,6 +28,8 @@ const Login = () => {
         if (data.error) {
           alert(data.error);
         } else {
+          localStorage.setItem('jwt', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
           navigate('/');
         }
       })
@@ -54,7 +56,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button className={cx('btn')} type="submit" onClick={postData}>
+        <button className={cx('btn')} type="submit" onClick={handleLogin}>
           Log in
         </button>
       </form>
