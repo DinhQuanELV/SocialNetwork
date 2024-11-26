@@ -9,11 +9,12 @@ import CreatePost from '~/pages/CreatePost';
 const publicRoutes = [
   { path: '/login', component: Login, layout: null },
   { path: '/signup', component: Signup, layout: null },
+];
+
+const privateRoutes = [
   { path: '/', component: Home, layout: SidebarOnly },
   { path: '/profile', component: Profile, layout: SidebarOnly },
   { path: '/createpost', component: CreatePost, layout: SidebarOnly },
 ];
-
-const privateRoutes = [];
 
 export { publicRoutes, privateRoutes };

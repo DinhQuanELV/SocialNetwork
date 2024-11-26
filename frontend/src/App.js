@@ -1,43 +1,76 @@
-import { Fragment } from 'react';
+import { createContext, useReducer, Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { publicRoutes } from '~/routes';
+import { publicRoutes, privateRoutes } from '~/routes';
 import { DefaultLayout } from '~/Layouts';
+import { initState, reducer } from '~/reducers/userReducer';
+import RequireAuthentication from '~/components/Authentication/RequireAuth';
+
+export const UserContext = createContext();
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initState);
+
   return (
-    <Router
-      future={{
-        v7_relativeSplatPath: true,
-        v7_startTransition: true,
-      }}
-    >
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Page = route.component;
-            let Layout = DefaultLayout;
+    <UserContext.Provider value={{ state, dispatch }}>
+      <Router
+        future={{
+          v7_relativeSplatPath: true,
+          v7_startTransition: true,
+        }}
+      >
+        <div className="App">
+          <Routes>
+            {publicRoutes.map((route, index) => {
+              const Page = route.component;
+              let Layout = DefaultLayout;
 
-            if (route.layout) {
-              Layout = route.layout;
-            } else if (route.layout === null) {
-              Layout = Fragment;
-            }
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-        </Routes>
-      </div>
-    </Router>
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })}
+
+            {privateRoutes.map((route, index) => {
+              const Page = route.component;
+              let Layout = DefaultLayout;
+
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
+
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <RequireAuthentication>
+                      <Layout>
+                        <Page />
+                      </Layout>
+                    </RequireAuthentication>
+                  }
+                />
+              );
+            })}
+          </Routes>
+        </div>
+      </Router>
+    </UserContext.Provider>
   );
 }
 

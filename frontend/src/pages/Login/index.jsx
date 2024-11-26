@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
+import { UserContext } from '~/App';
 
 const cx = classNames.bind(styles);
 
 const Login = () => {
+  const { dispatch } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -30,6 +32,7 @@ const Login = () => {
         } else {
           localStorage.setItem('jwt', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
+          dispatch({ type: 'USER', payload: data.user });
           navigate('/');
         }
       })
