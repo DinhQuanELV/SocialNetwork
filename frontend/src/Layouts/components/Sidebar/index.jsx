@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
+import Logout from '~/components/Authentication/Logout';
 
 const cx = classNames.bind(styles);
 
@@ -12,16 +13,13 @@ const Sidebar = () => {
       </Link>
       <ul>
         <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/signup">Signup</Link>
+          <Link to="/createpost">Create Post</Link>
         </li>
         <li>
           <Link to="/profile">Profile</Link>
         </li>
         <li>
-          <Link to="/createpost">Post</Link>
+          <Logout />
         </li>
       </ul>
     </aside>
