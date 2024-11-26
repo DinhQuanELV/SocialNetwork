@@ -1,9 +1,25 @@
 import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(styles);
 
 const Profile = () => {
+  const [myPost, setMyPost] = useState([]);
+
+  useEffect(() => {
+    fetch('/mypost', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setMyPost(result.myPost);
+      });
+  }, []);
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('body')}>
@@ -22,31 +38,16 @@ const Profile = () => {
         </div>
       </div>
       <div className={cx('posts')}>
-        <img
-          className={cx('post')}
-          src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-          alt="post"
-        />
-        <img
-          className={cx('post')}
-          src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-          alt="post"
-        />
-        <img
-          className={cx('post')}
-          src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-          alt="post"
-        />
-        <img
-          className={cx('post')}
-          src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-          alt="post"
-        />
-        <img
-          className={cx('post')}
-          src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-          alt="post"
-        />
+        {myPost.map((post) => {
+          return (
+            <img
+              className={cx('post')}
+              src={post.image}
+              alt={post.title}
+              key={post._id}
+            />
+          );
+        })}
       </div>
     </div>
   );
