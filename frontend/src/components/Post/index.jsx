@@ -73,6 +73,33 @@ const Post = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleCreateComment = (text, postId) => {
+    fetch('/comment', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({
+        text,
+        postId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.map((post) => {
+          if (post._id === result._id) {
+            return result;
+          } else {
+            return post;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className={cx('wrapper')}>
       {Array.isArray(data) &&
@@ -108,7 +135,24 @@ const Post = () => {
                 )}
                 <span>{post.likes.length} likes</span>
                 <span>{post.title}</span>
-                <input type="text" placeholder="Add a comment..." />
+                <span>
+                  {post.comments.map((comment) => {
+                    return (
+                      <h6 key={comment._id}>
+                        <span>{comment.postedBy.name}</span>
+                        {comment.text}
+                      </h6>
+                    );
+                  })}
+                </span>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleCreateComment(e.target[0].value, post._id);
+                  }}
+                >
+                  <input type="text" placeholder="Add a comment..." />
+                </form>
               </div>
             </div>
           );
