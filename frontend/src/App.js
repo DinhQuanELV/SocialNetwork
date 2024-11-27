@@ -1,14 +1,20 @@
-import { createContext, useReducer, Fragment } from 'react';
+import { createContext, useReducer, Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '~/routes';
 import { DefaultLayout } from '~/Layouts';
 import { initState, reducer } from '~/reducers/userReducer';
-import RequireAuthentication from '~/components/Authentication/RequireAuth';
+import RequireAuthentication from '~/components/Authentication/RequireAuthentication';
 
 export const UserContext = createContext();
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initState);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      dispatch({ type: 'USER', payload: user });
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ state, dispatch }}>

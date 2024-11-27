@@ -1,11 +1,13 @@
 import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '~/App';
 
 const cx = classNames.bind(styles);
 
 const Profile = () => {
   const [myPost, setMyPost] = useState([]);
+  const { state } = useContext(UserContext);
 
   useEffect(() => {
     fetch('/mypost', {
@@ -29,7 +31,7 @@ const Profile = () => {
           alt="avatar"
         />
         <div className={cx('info')}>
-          <h4 className={cx('name')}>Dinh Quan</h4>
+          <h4 className={cx('name')}>{state && state.name}</h4>
           <div className={cx('stats')}>
             <span>posts</span>
             <span>followers</span>
