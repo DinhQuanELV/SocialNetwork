@@ -109,4 +109,8 @@ router.put('/comment', requireLogin, (req, res) => {
     .catch((err) => res.status(422).json(err));
 });
 
+router.delete('/deletepost/:postId', requireLogin, (req, res) => {
+  //
+});
+
 module.exports = router;

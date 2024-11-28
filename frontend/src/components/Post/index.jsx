@@ -1,6 +1,7 @@
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Post.module.scss';
-import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import { FaRegHeart, FaHeart, FaTrash } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '~/App';
 
@@ -100,6 +101,23 @@ const Post = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleDeletePost = (postId) => {
+    fetch(`/deletepost/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
+
   return (
     <div className={cx('wrapper')}>
       {Array.isArray(data) &&
@@ -112,24 +130,36 @@ const Post = () => {
                   src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
                   alt="avatar"
                 />
-                <h4 className={cx('name')}>{post.postedBy.name}</h4>
+                <h4 className={cx('name')}>
+                  <Link
+                    to={
+                      state && state._id && post.postedBy._id !== state._id
+                        ? `/profile/${post.postedBy._id}`
+                        : '/profile'
+                    }
+                  >
+                    {post.postedBy.name}
+                  </Link>
+                </h4>
+                {state && state._id && post.postedBy._id === state._id && (
+                  <span
+                    onClick={() => {
+                      handleDeletePost(post._id);
+                    }}
+                    style={{ marginLeft: 'auto' }}
+                  >
+                    <FaTrash />
+                  </span>
+                )}
               </div>
               <img className={cx('image')} src={post.image} alt="post" />
               <div className={cx('activity')}>
                 {state && state._id && post.likes.includes(state._id) ? (
-                  <span
-                    onClick={() => {
-                      handleUnLikePost(post._id);
-                    }}
-                  >
+                  <span onClick={() => handleUnLikePost(post._id)}>
                     <FaHeart />
                   </span>
                 ) : (
-                  <span
-                    onClick={() => {
-                      handleLikePost(post._id);
-                    }}
-                  >
+                  <span onClick={() => handleLikePost(post._id)}>
                     <FaRegHeart />
                   </span>
                 )}
