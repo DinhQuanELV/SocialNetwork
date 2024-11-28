@@ -34,8 +34,12 @@ const Profile = () => {
           <h4 className={cx('name')}>{state && state.name}</h4>
           <div className={cx('stats')}>
             <span>{myPost.length} posts</span>
-            <span>followers</span>
-            <span>following</span>
+            <span>
+              {state && state.followers ? state.followers.length : 0} followers
+            </span>
+            <span>
+              {state && state.following ? state.following.length : 0} following
+            </span>
           </div>
         </div>
       </div>

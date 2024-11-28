@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './UserProfile.module.scss';
-import UserNotFound from '~/components/User/UserNotFound';
+import { UserContext } from '~/App';
+import Loader from '~/components/Animations/Loader';
 
 const cx = classNames.bind(styles);
 
 const UserProfile = () => {
-  const [userProfile, setUserProfile] = useState([]);
-  const [userPosts, setUserPosts] = useState([]);
   const { userid } = useParams();
+  const { dispatch } = useContext(UserContext);
+  const [user, setUser] = useState('');
+  const [posts, setPosts] = useState([]);
+  const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
     fetch(`/user/${userid}`, {
@@ -20,14 +23,79 @@ const UserProfile = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        setUserProfile(result.user);
-        setUserPosts(result.posts);
+        setUser(result.user);
+        setPosts(result.posts);
+        if (
+          result.user.followers.includes(
+            JSON.parse(localStorage.getItem('user'))._id,
+          )
+        ) {
+          setIsFollow(true);
+        }
       });
-  }, [userid]);
+  }, [userid, isFollow]);
+
+  const handleFollowUser = (userid) => {
+    fetch('/follow', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({
+        followId: userid,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Chưa ẩn password');
+        console.log(data);
+        setIsFollow(true);
+        dispatch({
+          type: 'UPDATE',
+          payload: { following: data.following, followers: data.followers },
+        });
+        localStorage.setItem('user', JSON.stringify(data));
+        // setUser((prevState) => ({
+        //   ...prevState,
+        //   followers: [...prevState.followers, data._id],
+        // }));
+      });
+  };
+
+  const handleUnfollowUser = (userid) => {
+    fetch('/unfollow', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+      body: JSON.stringify({
+        followId: userid,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Chưa ẩn password');
+        console.log(data);
+        setIsFollow(false);
+        dispatch({
+          type: 'UPDATE',
+          payload: { following: data.following, followers: data.followers },
+        });
+        localStorage.setItem('user', JSON.stringify(data));
+        // setUser((prevState) => ({
+        //   ...prevState,
+        //   followers: [...prevState.followers, data._id],
+        // }));
+      });
+  };
 
   return (
     <>
-      {userProfile ? (
+      {!user ? (
+        <Loader />
+      ) : (
         <div className={cx('wrapper')}>
           <div className={cx('body')}>
             <img
@@ -36,18 +104,31 @@ const UserProfile = () => {
               alt="avatar"
             />
             <div className={cx('info')}>
-              <h4 className={cx('name')}>{userProfile && userProfile.name}</h4>
+              <h4 className={cx('name')}>{user && user.name}</h4>
+              {!isFollow ? (
+                <button onClick={() => handleFollowUser(user._id)}>
+                  Follow
+                </button>
+              ) : (
+                <button onClick={() => handleUnfollowUser(user._id)}>
+                  Unfollow
+                </button>
+              )}
               <div className={cx('stats')}>
-                <span>{userPosts && userPosts.length} posts</span>
-                <span>followers</span>
-                <span>following</span>
+                <span>{posts && posts.length} posts</span>
+                <span>
+                  {user && user.followers ? user.followers.length : 0} followers
+                </span>
+                <span>
+                  {user && user.following ? user.following.length : 0} following
+                </span>
               </div>
             </div>
           </div>
           <div className={cx('posts')}>
-            {userProfile &&
-              userPosts &&
-              userPosts.map((post) => {
+            {user &&
+              posts &&
+              posts.map((post) => {
                 return (
                   <img
                     className={cx('post')}
@@ -59,8 +140,6 @@ const UserProfile = () => {
               })}
           </div>
         </div>
-      ) : (
-        <UserNotFound />
       )}
     </>
   );
