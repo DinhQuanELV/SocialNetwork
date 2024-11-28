@@ -2,17 +2,17 @@ import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { FaRegHeart, FaHeart, FaTrash } from 'react-icons/fa';
-import styles from './Post.module.scss';
+import styles from './FollowingPost.module.scss';
 import { UserContext } from '~/App';
 
 const cx = classNames.bind(styles);
 
-const Post = () => {
+const FollowingPost = () => {
   const [data, setData] = useState([]);
   const { state } = useContext(UserContext);
 
   useEffect(() => {
-    fetch('/allpost', {
+    fetch('/following', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('jwt'),
@@ -191,4 +191,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default FollowingPost;

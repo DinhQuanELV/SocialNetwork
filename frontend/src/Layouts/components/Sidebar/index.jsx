@@ -16,6 +16,9 @@ const Sidebar = () => {
           <Link to="/createpost">Create Post</Link>
         </li>
         <li>
+          <Link to="/following">Following</Link>
+        </li>
+        <li>
           <Link to="/profile">Profile</Link>
         </li>
         <li>

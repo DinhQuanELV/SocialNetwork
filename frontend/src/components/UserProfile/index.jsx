@@ -49,7 +49,6 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log('Chưa ẩn password');
-        console.log(data);
         setIsFollow(true);
         dispatch({
           type: 'UPDATE',
@@ -77,7 +76,6 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log('Chưa ẩn password');
-        console.log(data);
         setIsFollow(false);
         dispatch({
           type: 'UPDATE',

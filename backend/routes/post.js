@@ -16,6 +16,19 @@ router.get('/allpost', requireLogin, (req, res) => {
     });
 });
 
+router.get('/following', requireLogin, (req, res) => {
+  // if postedBy in following
+  Post.find({ postedBy: { $in: req.user.following } })
+    .populate('postedBy', '_id name')
+    .populate('comments.postedBy', '_id name')
+    .then((posts) => {
+      res.json({ posts });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 router.post('/createpost', requireLogin, (req, res) => {
   const { title, pic } = req.body;
   if (!title || !pic) {
