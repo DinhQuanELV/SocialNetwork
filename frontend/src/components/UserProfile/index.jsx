@@ -96,11 +96,7 @@ const UserProfile = () => {
       ) : (
         <div className={cx('wrapper')}>
           <div className={cx('body')}>
-            <img
-              className={cx('avatar')}
-              src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-              alt="avatar"
-            />
+            <img className={cx('avatar')} src={user.avatar} alt="avatar" />
             <div className={cx('info')}>
               <h4 className={cx('name')}>{user && user.name}</h4>
               {!isFollow ? (

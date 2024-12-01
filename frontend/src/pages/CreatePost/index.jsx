@@ -27,7 +27,7 @@ const CreatePost = () => {
         .then((res) => res.json())
         .then((data) => {
           if (data.error) {
-            alert(data.error);
+            console.log(data.error);
           } else {
             navigate('/');
           }

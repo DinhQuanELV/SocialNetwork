@@ -3,6 +3,10 @@
 
 :root {
   --primary: #00a9ff;
+  --text: #e2e5e9;
+  --dark-background: #252728;
+  --hover-background: #3b3d3e;
+  --line: #4b4d51;
 }
 
 * {
@@ -20,4 +24,6 @@ body {
   font-size: 1.6rem;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
+  color: var(--text);
+  background-color: var(--dark-background);
 }

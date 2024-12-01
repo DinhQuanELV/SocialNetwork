@@ -1,13 +1,15 @@
+import { useContext, useEffect, useState } from 'react';
+import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
-import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '~/App';
+import ChangeAvatar from '~/components/Popovers/ChangeAvatar';
 
 const cx = classNames.bind(styles);
 
 const Profile = () => {
-  const [myPost, setMyPost] = useState([]);
   const { state } = useContext(UserContext);
+  const [myPost, setMyPost] = useState([]);
 
   useEffect(() => {
     fetch('/mypost', {
@@ -25,11 +27,26 @@ const Profile = () => {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('body')}>
-        <img
-          className={cx('avatar')}
-          src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
-          alt="avatar"
-        />
+        <div>
+          <Tippy
+            hideOnClick
+            trigger="click"
+            interactive
+            placement="bottom"
+            render={(attrs) => (
+              <div className={cx('avatar-option')} tabIndex="-1" {...attrs}>
+                <ChangeAvatar />
+              </div>
+            )}
+          >
+            <img
+              className={cx('avatar')}
+              src={state && state.avatar && state.avatar}
+              alt="avatar"
+            />
+          </Tippy>
+        </div>
+
         <div className={cx('info')}>
           <h4 className={cx('name')}>{state && state.name}</h4>
           <div className={cx('stats')}>

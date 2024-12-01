@@ -93,4 +93,22 @@ router.put('/unfollow', requireLogin, (req, res) => {
     });
 });
 
+router.put('/updateAvatar', requireLogin, (req, res) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: { avatar: req.body.avatar },
+    },
+    {
+      new: true,
+    },
+  )
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      return res.status(422).json({ error: err });
+    });
+});
+
 module.exports = router;

@@ -5,6 +5,8 @@
 .body {
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 20px;
 }
 
 .avatar {
@@ -13,6 +15,11 @@
   object-fit: cover;
   border-radius: 50%;
   margin: 60px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
 }
 
 .info {

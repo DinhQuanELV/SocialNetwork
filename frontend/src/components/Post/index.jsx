@@ -123,11 +123,11 @@ const Post = () => {
       {Array.isArray(data) &&
         data.map((post) => {
           return (
-            <div className={cx('post')} key={post._id}>
+            <div className={cx('post')} key={post && post._id && post._id}>
               <div className={cx('info')}>
                 <img
                   className={cx('avatar')}
-                  src="https://lh3.googleusercontent.com/a/ACg8ocLr-WaQOOYYgxufAz56i6lS4c5fEgjmV_zPsfmVuha2wuYxZu3H=s360-c-no"
+                  src={state && state.avatar && state.avatar}
                   alt="avatar"
                 />
                 <h4 className={cx('name')}>
