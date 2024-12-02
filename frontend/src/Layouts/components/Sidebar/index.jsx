@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
 import Logout from '~/components/Authentication/Logout';
+import Search from '~/components/Search';
 
 const cx = classNames.bind(styles);
 
@@ -13,6 +14,12 @@ const Sidebar = () => {
       </Link>
       <ul>
         <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Search />
+        </li>
+        <li>
           <Link to="/createpost">Create Post</Link>
         </li>
         <li>
@@ -21,6 +28,7 @@ const Sidebar = () => {
         <li>
           <Link to="/profile">Profile</Link>
         </li>
+
         <li>
           <Logout />
         </li>
