@@ -3,13 +3,14 @@ import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 import styles from './Profile.module.scss';
 import { UserContext } from '~/App';
-import ChangeAvatar from '~/components/Popovers/ChangeAvatar';
+import AvatarMenu from '~/components/Popovers/AvatarMenu';
 
 const cx = classNames.bind(styles);
 
 const Profile = () => {
   const { state } = useContext(UserContext);
   const [myPost, setMyPost] = useState([]);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     fetch('/mypost', {
@@ -29,13 +30,18 @@ const Profile = () => {
       <div className={cx('body')}>
         <div>
           <Tippy
-            hideOnClick
-            trigger="click"
+            visible={isVisible}
+            onClickOutside={() => setIsVisible(false)}
             interactive
             placement="bottom"
             render={(attrs) => (
-              <div className={cx('avatar-option')} tabIndex="-1" {...attrs}>
-                <ChangeAvatar />
+              <div
+                className={cx('avatar-option')}
+                tabIndex="-1"
+                {...attrs}
+                onClick={() => setIsVisible(false)}
+              >
+                <AvatarMenu />
               </div>
             )}
           >
@@ -43,6 +49,7 @@ const Profile = () => {
               className={cx('avatar')}
               src={state && state.avatar && state.avatar}
               alt="avatar"
+              onClick={() => setIsVisible(!isVisible)}
             />
           </Tippy>
         </div>

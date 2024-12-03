@@ -1,16 +1,31 @@
 import { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { CiImageOn, CiImageOff } from 'react-icons/ci';
-import styles from './ChangeAvatar.module.scss';
+import { Button, Modal } from 'react-bootstrap';
+
+import styles from './AvatarMenu.module.scss';
 import { UserContext } from '~/App';
 
 const cx = classNames.bind(styles);
 
-const ChangeAvatar = () => {
+const AvatarMenu = () => {
   const { state, dispatch } = useContext(UserContext);
   const [image, setImage] = useState('');
+  const [show, setShow] = useState(false);
+  const [isRemove, setIsRemove] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
+    if (isRemove) {
+      handleUpdateAvatar();
+      setIsRemove(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image]);
+
+  const handleUpdateAvatar = () => {
     if (image) {
       const data = new FormData();
       data.append('file', image);
@@ -48,21 +63,21 @@ const ChangeAvatar = () => {
           console.log(err);
         });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [image]);
 
-  const handleChangeAvatar = (file) => {
-    setImage(file);
+    handleClose();
   };
 
   const handleRemoveAvatar = () => {
-    console.log('remove');
+    const defaultAvatar =
+      'https://res.cloudinary.com/dqelv/image/upload/v1733063805/DefaultAvatar_nd8ddn.png';
+    setImage(defaultAvatar);
+    setIsRemove(true);
   };
 
   return (
     <div className={cx('wrapper')}>
       <div className={cx('buttons')}>
-        <button className={cx('button')}>
+        <button className={cx('button')} onClick={handleShow}>
           <span className={cx('icon')}>
             <CiImageOn />
           </span>
@@ -74,15 +89,26 @@ const ChangeAvatar = () => {
           </span>
           <span className={cx('text')}>Remove avatar</span>
         </button>
-        <div>
-          <input
-            type="file"
-            onChange={(e) => handleChangeAvatar(e.target.files[0])}
-          />
-        </div>
       </div>
+
+      <Modal show={show} onHide={handleClose} data-bs-theme="dark">
+        <Modal.Header closeButton>
+          <Modal.Title>Change avatar</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleUpdateAvatar}>
+            Save
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
 
-export default ChangeAvatar;
+export default AvatarMenu;
