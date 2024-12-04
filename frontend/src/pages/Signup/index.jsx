@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import { FcGoogle } from 'react-icons/fc';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+
 import styles from './Signup.module.scss';
 
 const cx = classNames.bind(styles);
@@ -9,6 +12,8 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
@@ -40,6 +45,11 @@ const Signup = () => {
   return (
     <div className={cx('wrapper')}>
       <h1 className={cx('logo')}>dqelv</h1>
+      <button className={cx('google-btn')}>
+        <FcGoogle />
+        <span>Log in with Google</span>
+      </button>
+      <span className={cx('login-with')}>Or</span>
       <form className={cx('form')}>
         <input
           className={cx('input')}
@@ -55,19 +65,36 @@ const Signup = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          className={cx('input')}
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className={cx('btn')} type="submit" onClick={handleSignup}>
+        <div className={cx('password-input')}>
+          <input
+            className={cx('input')}
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {!!password && (
+            <span
+              className={cx('toggle-password')}
+              onClick={() => setShowPassword((showPassword) => !showPassword)}
+            >
+              {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
+            </span>
+          )}
+        </div>
+        <button
+          className={cx('signup-btn')}
+          type="submit"
+          onClick={handleSignup}
+        >
           Sign up
         </button>
       </form>
       <p className={cx('login')}>
-        Have an account? <Link to="/login">Log in</Link>
+        Have an account?{' '}
+        <Link to="/login" className={cx('login-link')}>
+          Log in
+        </Link>
       </p>
     </div>
   );

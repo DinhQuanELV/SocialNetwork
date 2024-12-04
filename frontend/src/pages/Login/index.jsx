@@ -100,7 +100,7 @@ const Login = () => {
                 Log in
               </button>
             </form>
-            <span className={cx('signin-with')}>Or</span>
+            <span className={cx('login-with')}>Or</span>
             <button className={cx('google-btn')}>
               <FcGoogle />
               <span>Log in with Google</span>
