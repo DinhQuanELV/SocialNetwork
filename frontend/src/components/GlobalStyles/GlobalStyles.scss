@@ -1,5 +1,5 @@
 @import 'normalize.css';
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ephesis&family=Quicksand:wght@300..700&display=swap');
 @import '~bootstrap/scss/bootstrap';
 
 :root {
@@ -9,6 +9,8 @@
   --secondary-dark-background: #252728;
   --hover-background: #3b3d3e;
   --line: #4b4d51;
+  --white: #fff;
+  --black: #000;
 }
 
 * {
@@ -22,7 +24,7 @@ html {
 }
 
 body {
-  font-family: 'Barlow', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-size: 1.6rem;
   line-height: 1.5;
   text-rendering: optimizeSpeed;
