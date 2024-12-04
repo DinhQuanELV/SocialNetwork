@@ -5,7 +5,6 @@ import FollowUsersToSee from '~/components/Pages/FollowUsersToSee';
 
 const Following = () => {
   const { state } = useContext(UserContext);
-  console.log(state);
 
   return (
     <div>

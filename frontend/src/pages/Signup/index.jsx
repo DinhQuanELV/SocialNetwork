@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 
 const Signup = () => {
   const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +26,7 @@ const Signup = () => {
       },
       body: JSON.stringify({
         name,
+        username,
         email,
         password,
       }),
@@ -57,6 +59,13 @@ const Signup = () => {
           placeholder="Full name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          className={cx('input')}
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <input
           className={cx('input')}

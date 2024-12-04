@@ -88,7 +88,6 @@ const FollowingPost = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        console.log(result);
         const newData = data.map((post) => {
           if (post._id === result._id) {
             return result;

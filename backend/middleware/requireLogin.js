@@ -4,12 +4,12 @@ const User = mongoose.model('User');
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
-  // authorization === Bearer asdf
+  // authorization === Bearer wassup
   if (!authorization) {
     res.status(401).json({ error: 'you must be login' });
   }
   const token = authorization.replace('Bearer ', '');
-  jwt.verify(token, 'asdf', (err, payload) => {
+  jwt.verify(token, 'wassup', (err, payload) => {
     if (err) {
       res.status(401).json({ error: 'you must be login' });
     }

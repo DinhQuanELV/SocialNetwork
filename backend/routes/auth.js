@@ -8,19 +8,26 @@ const jwt = require('jsonwebtoken');
 const requireLogin = require('../middleware/requireLogin');
 
 router.post('/signup', (req, res) => {
-  const { name, email, password } = req.body;
-  if (!email || !password || !name) {
-    return res.status(422).json({ error: 'Please add all the fields' });
+  const { name, username, email, password } = req.body;
+  if (!email || !username || !password || !name) {
+    return res.status(422).json({ error: 'Please type all the fields' });
   }
-  User.findOne({ email: email })
+  User.findOne({ $or: [{ username: username }, { email: email }] })
     .then((savedUser) => {
       if (savedUser) {
-        return res
-          .status(422)
-          .json({ error: 'user already exists with that email' });
+        console.log(savedUser.username === username);
+        console.log(savedUser.email === email);
+        if (savedUser.username === username) {
+          return res.status(422).json({ error: 'Username already exists' });
+        }
+        if (savedUser.email === email) {
+          return res.status(422).json({ error: 'Email already exists' });
+        }
       }
+
       bcrypt.hash(password, saltRounds).then((hashedPassword) => {
         const user = new User({
+          username,
           email,
           password: hashedPassword,
           name,
@@ -28,8 +35,8 @@ router.post('/signup', (req, res) => {
 
         user
           .save()
-          .then((user) => {
-            res.json({ message: 'saved successfully' });
+          .then(() => {
+            res.json({ message: 'Saved successfully' });
           })
           .catch((err) => {
             console.log(err);
@@ -58,12 +65,30 @@ router.post('/login', (req, res) => {
             {
               _id: savedUser._id,
             },
-            'asdf',
+            'wassup',
           );
-          const { _id, name, email, avatar, followers, following } = savedUser;
+          const {
+            _id,
+            name,
+            username,
+            email,
+            avatar,
+            bio,
+            followers,
+            following,
+          } = savedUser;
           res.json({
             token,
-            user: { _id, name, email, avatar, followers, following },
+            user: {
+              _id,
+              name,
+              username,
+              email,
+              avatar,
+              bio,
+              followers,
+              following,
+            },
           });
         } else {
           return res.status(422).json({ error: 'Invalid email or password' });
