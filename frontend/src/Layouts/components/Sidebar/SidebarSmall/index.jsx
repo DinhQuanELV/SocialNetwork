@@ -7,17 +7,17 @@ import { PiUserCheck, PiUserCheckFill } from 'react-icons/pi';
 import { PiCameraPlus, PiCameraPlusFill } from 'react-icons/pi';
 import { CgDetailsMore } from 'react-icons/cg';
 
-import Menu from './Menu';
-import MenuItem from './Menu/MenuItem';
+import Menu from '../Menu';
+import MenuItem from '../Menu/MenuItem';
 import config from '~/config';
-import styles from './Sidebar.module.scss';
+import styles from './SidebarSmall.module.scss';
 import Search from '~/components/Search';
 import { UserContext } from '~/App';
 import SidebarMenu from '~/components/Popovers/SidebarMenu';
 
 const cx = classNames.bind(styles);
 
-const Sidebar = () => {
+const SidebarSmall = () => {
   const { state } = useContext(UserContext);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -28,26 +28,26 @@ const Sidebar = () => {
       </Link>
       <Menu>
         <MenuItem
-          title="Home"
+          title=""
           to={config.routes.home}
           icon={<GoHome className={cx('icon')} />}
           activeIcon={<GoHomeFill className={cx('icon')} />}
         />
-        <Search title="Search" />
+        <MenuItem title="" icon={<Search />} activeIcon={<Search />} />
         <MenuItem
-          title="Following"
+          title=""
           to={config.routes.following}
           icon={<PiUserCheck className={cx('icon')} />}
           activeIcon={<PiUserCheckFill className={cx('icon')} />}
         />
         <MenuItem
-          title="Create Post"
+          title=""
           to={config.routes.createPost}
           icon={<PiCameraPlus className={cx('icon')} />}
           activeIcon={<PiCameraPlusFill className={cx('icon')} />}
         />
         <MenuItem
-          title="Profile"
+          title=""
           to={config.routes.profile}
           icon={
             <img
@@ -88,11 +88,10 @@ const Sidebar = () => {
           onClick={() => setIsVisible(!isVisible)}
         >
           <CgDetailsMore className={cx('icon')} />
-          <span className={cx('title')}>More</span>
         </button>
       </Tippy>
     </aside>
   );
 };
 
-export default Sidebar;
+export default SidebarSmall;

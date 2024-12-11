@@ -1,0 +1,37 @@
+.menu-item {
+  display: flex;
+  align-items: center;
+  height: var(--button-height);
+  padding: 12px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color ease-in-out 200ms;
+
+  &.active {
+    color: var(--primary);
+    font-weight: 700;
+
+    .icon {
+      display: none;
+    }
+
+    .active-icon {
+      display: flex;
+    }
+  }
+
+  &:hover {
+    background-color: var(--hover-background);
+  }
+}
+
+.title {
+  margin-left: 12px;
+}
+
+.active-icon {
+  display: none;
+}

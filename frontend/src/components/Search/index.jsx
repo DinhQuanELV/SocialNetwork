@@ -1,7 +1,8 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import { IoSearchOutline } from 'react-icons/io5';
 import { IoIosCloseCircle } from 'react-icons/io';
 import { TbLoader2 } from 'react-icons/tb';
 
@@ -11,7 +12,7 @@ import useDebounce from '~/hooks/useDebounce';
 
 const cx = classNames.bind(styles);
 
-const Search = () => {
+const Search = ({ title }) => {
   const { state } = useContext(UserContext);
   const [show, setShow] = useState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -74,7 +75,10 @@ const Search = () => {
 
   return (
     <>
-      <Button onClick={handleShow}>Search</Button>
+      <button onClick={handleShow} className={cx('button')}>
+        <IoSearchOutline className={cx('icon')} />
+        <span>{title}</span>
+      </button>
 
       <Modal show={show} onHide={handleClose} data-bs-theme="dark">
         <Modal.Header closeButton className={cx('header')}>
