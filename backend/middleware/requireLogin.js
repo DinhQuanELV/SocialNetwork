@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
   }
   const token = authorization.replace('Bearer ', '');
   jwt.verify(token, 'wassup', (err, payload) => {
-    if (err) {
+    if (err || !payload) {
       res.status(401).json({ error: 'you must be login' });
     }
 

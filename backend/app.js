@@ -1,28 +1,30 @@
 const express = require('express');
-const app = express();
 const mongoose = require('mongoose');
-const port = 5000;
+const cors = require('cors');
+require('dotenv').config();
 
-mongoose.connect(
-  'mongodb+srv://dq:6RDl85K40J979yGe@dq.ktpaz.mongodb.net/?retryWrites=true&w=majority&appName=dq',
-);
-mongoose.connection.on('connected', () => {
-  console.log('connect successfully');
-});
-mongoose.connection.on('error', (err) => {
-  console.log('connect failure');
-});
+const app = express();
+const port = 5000;
+const uri = process.env.ATLAS_URI;
+
+mongoose
+  .connect(uri)
+  .then(() => console.log('Connect successfully'))
+  .catch((err) => {
+    console.log(err);
+  });
 
 require('./models/user');
 require('./models/post');
 
 app.use(express.json());
+app.use(cors());
 app.use(require('./routes/auth'));
 app.use(require('./routes/post'));
 app.use(require('./routes/user'));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
+  res.send('Wassup');
 });
 
 app.listen(port, () => {

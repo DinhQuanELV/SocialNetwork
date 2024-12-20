@@ -1,27 +1,47 @@
 const express = require('express');
-const router = express.Router();
 const mongoose = require('mongoose');
-const User = mongoose.model('User');
+const validator = require('validator');
+require('dotenv').config();
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 const jwt = require('jsonwebtoken');
-const requireLogin = require('../middleware/requireLogin');
+
+const router = express.Router();
+const User = mongoose.model('User');
+const saltRounds = 10;
+const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
 router.post('/signup', (req, res) => {
   const { name, username, email, password } = req.body;
   if (!email || !username || !password || !name) {
-    return res.status(422).json({ error: 'Please type all the fields' });
+    return res.status(400).json({ error: 'Please type all the fields!' });
+  }
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: 'Email is not valid!' });
+  }
+  if (
+    !validator.isStrongPassword(password, [
+      {
+        minLength: 8,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      },
+    ])
+  ) {
+    return res.status(400).json({
+      error:
+        'Password must have at least 8 characters including a number, a uppercase and a symbol!',
+    });
   }
   User.findOne({ $or: [{ username: username }, { email: email }] })
     .then((savedUser) => {
       if (savedUser) {
-        console.log(savedUser.username === username);
-        console.log(savedUser.email === email);
         if (savedUser.username === username) {
-          return res.status(422).json({ error: 'Username already exists' });
+          return res.status(409).json({ error: 'Username already exists!' });
         }
         if (savedUser.email === email) {
-          return res.status(422).json({ error: 'Email already exists' });
+          return res.status(409).json({ error: 'Email already exists!' });
         }
       }
 
@@ -36,10 +56,11 @@ router.post('/signup', (req, res) => {
         user
           .save()
           .then(() => {
-            res.json({ message: 'Saved successfully' });
+            res.json({ message: 'Sign up successfully!' });
           })
           .catch((err) => {
             console.log(err);
+            res.status(500).json(err);
           });
       });
     })
@@ -51,21 +72,23 @@ router.post('/signup', (req, res) => {
 router.post('/login', (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(422).json({ error: 'Please provide email or password' });
+    return res.status(422).json({ error: 'Please fill email or password!' });
   }
   User.findOne({ email: email })
     .then((savedUser) => {
       if (!savedUser) {
-        return res.status(422).json({ error: 'Invalid email or password' });
+        return res.status(422).json({ error: 'Invalid email or password!' });
       }
-      bcrypt.compare(password, savedUser.password).then((doMatch) => {
-        if (doMatch) {
-          // res.json({ message: 'login successful' });
+      bcrypt.compare(password, savedUser.password).then((isMatchPassword) => {
+        if (!isMatchPassword) {
+          return res.status(422).json({ error: 'Invalid email or password!' });
+        } else {
           const token = jwt.sign(
             {
               _id: savedUser._id,
             },
-            'wassup',
+            jwtSecretKey,
+            { algorithm: 'HS256' },
           );
           const {
             _id,
@@ -90,8 +113,6 @@ router.post('/login', (req, res) => {
               following,
             },
           });
-        } else {
-          return res.status(422).json({ error: 'Invalid email or password' });
         }
       });
     })
