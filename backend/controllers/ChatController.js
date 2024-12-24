@@ -23,6 +23,7 @@ class ChatController {
       .catch(next);
   }
 
+  //   [GET] /chat/:userId
   findUserChats(req, res, next) {
     const userId = req.params.userId;
     Chat.find({
@@ -34,6 +35,7 @@ class ChatController {
       .catch(next);
   }
 
+  //   [GET] /chat/find/:firstUserId/:secondUserId
   findChat(req, res, next) {
     const { firstId, secondId } = req.params;
     Chat.findOne({
