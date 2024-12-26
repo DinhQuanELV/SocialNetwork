@@ -6,6 +6,7 @@ import Home from '~/pages/Home';
 import Profile from '~/pages/Profile';
 import Following from '~/pages/Following';
 import CreatePost from '~/pages/CreatePost';
+import Chat from '~/pages/Chat';
 import UserProfile from '~/components/UserProfile';
 
 const publicRoutes = [
@@ -20,6 +21,11 @@ const privateRoutes = [
   {
     path: config.routes.createPost,
     component: CreatePost,
+    layout: SidebarOnly,
+  },
+  {
+    path: config.routes.chat,
+    component: Chat,
     layout: SidebarOnly,
   },
   {

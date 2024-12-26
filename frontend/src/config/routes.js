@@ -5,6 +5,7 @@ const routes = {
   profile: '/profile',
   following: '/following',
   createPost: '/createPost',
+  chat: '/chat',
   userProfile: '/profile/:userid',
 };
 
