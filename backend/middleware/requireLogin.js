@@ -7,18 +7,22 @@ const jwtSecretKey = process.env.JWT_SECRET_KEY;
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   if (!authorization) {
-    res.status(401).json({ error: 'You must be login' });
+    return res.status(401).json({ error: 'You must be login' });
   }
   const token = authorization.replace('Bearer ', '');
   jwt.verify(token, jwtSecretKey, (err, payload) => {
     if (err || !payload) {
-      res.status(401).json({ error: 'You must be login' });
+      return res.status(401).json({ error: 'You must be login' });
     }
 
     const { _id } = payload;
-    User.findById(_id).then((userData) => {
-      req.user = userData;
-      next();
-    });
+    User.findById(_id)
+      .then((userData) => {
+        req.user = userData;
+        next();
+      })
+      .catch((err) => {
+        return res.status(500).json(err);
+      });
   });
 };
