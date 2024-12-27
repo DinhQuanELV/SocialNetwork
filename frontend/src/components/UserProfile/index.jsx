@@ -48,17 +48,12 @@ const UserProfile = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('Chưa ẩn password');
         setIsFollow(true);
         dispatch({
           type: 'UPDATE',
           payload: { following: data.following, followers: data.followers },
         });
         localStorage.setItem('user', JSON.stringify(data));
-        // setUser((prevState) => ({
-        //   ...prevState,
-        //   followers: [...prevState.followers, data._id],
-        // }));
       });
   };
 
@@ -75,17 +70,12 @@ const UserProfile = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('Chưa ẩn password');
         setIsFollow(false);
         dispatch({
           type: 'UPDATE',
           payload: { following: data.following, followers: data.followers },
         });
         localStorage.setItem('user', JSON.stringify(data));
-        // setUser((prevState) => ({
-        //   ...prevState,
-        //   followers: [...prevState.followers, data._id],
-        // }));
       });
   };
 
@@ -96,18 +86,30 @@ const UserProfile = () => {
       ) : (
         <div className={cx('wrapper')}>
           <div className={cx('body')}>
-            <img className={cx('avatar')} src={user.avatar} alt="avatar" />
+            <img
+              className={cx('avatar')}
+              src={user && user.avatar}
+              alt="avatar"
+            />
             <div className={cx('info')}>
-              <h4 className={cx('name')}>{user && user.name}</h4>
-              {!isFollow ? (
-                <button onClick={() => handleFollowUser(user._id)}>
-                  Follow
-                </button>
-              ) : (
-                <button onClick={() => handleUnfollowUser(user._id)}>
-                  Unfollow
-                </button>
-              )}
+              <div className={cx('activity-user')}>
+                <h4 className={cx('username')}>{user && user.name}</h4>
+                {!isFollow ? (
+                  <button
+                    className={cx('follow-btn')}
+                    onClick={() => handleFollowUser(user._id)}
+                  >
+                    Follow
+                  </button>
+                ) : (
+                  <button
+                    className={cx('unfollow-btn')}
+                    onClick={() => handleUnfollowUser(user._id)}
+                  >
+                    Unfollow
+                  </button>
+                )}
+              </div>
               <div className={cx('stats')}>
                 <span>{posts && posts.length} posts</span>
                 <span>
@@ -117,6 +119,8 @@ const UserProfile = () => {
                   {user && user.following ? user.following.length : 0} following
                 </span>
               </div>
+              <h4 className={cx('name')}>{user && user.name}</h4>
+              <p className={cx('bio')}></p>
             </div>
           </div>
           <div className={cx('posts')}>

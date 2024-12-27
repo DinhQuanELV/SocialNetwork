@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
-import Tippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
-import styles from './Profile.module.scss';
+import Tippy from '@tippyjs/react/headless';
+
 import { UserContext } from '~/App';
+import styles from './Profile.module.scss';
 import AvatarMenu from '~/components/Popovers/AvatarMenu';
 
 const cx = classNames.bind(styles);
@@ -13,7 +14,7 @@ const Profile = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    fetch('/mypost', {
+    fetch('/myPost', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('jwt'),
@@ -55,7 +56,10 @@ const Profile = () => {
         </div>
 
         <div className={cx('info')}>
-          <h4 className={cx('name')}>{state && state.name}</h4>
+          <h4 className={cx('username')}>
+            {state && state.username && state.username}
+          </h4>
+
           <div className={cx('stats')}>
             <span>{myPost.length} posts</span>
             <span>
@@ -65,6 +69,8 @@ const Profile = () => {
               {state && state.following ? state.following.length : 0} following
             </span>
           </div>
+          <h4 className={cx('name')}>{state && state.name && state.name}</h4>
+          <p className={cx('bio')}>{state && state.bio && state.bio}</p>
         </div>
       </div>
       <div className={cx('posts')}>

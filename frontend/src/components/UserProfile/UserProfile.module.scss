@@ -1,10 +1,11 @@
 .wrapper {
-  width: 920px;
+  width: 912px;
 }
 
 .body {
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .avatar {
@@ -17,29 +18,110 @@
 
 .info {
   flex: 1;
-  margin-top: 60px;
 }
 
-.name {
+.activity-user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.username {
   font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.follow-btn,
+.unfollow-btn {
+  width: 96px;
+  margin-left: 16px;
+  padding: 4px 8px;
+  height: var(--button-height-sm);
+  font-size: 1.6rem;
+  font-weight: 600;
+  border: none;
+  outline: none;
+  border-radius: var(--border-radius-btn);
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.follow-btn {
+  color: var(--text);
+  background-color: var(--primary);
+}
+
+.unfollow-btn {
+  color: var(--text);
+  background-color: var(--secondary-dark-background);
 }
 
 .stats {
   display: flex;
-  margin: 10px 60px 0 10px;
+  margin: 20px 60px 20px 0;
 }
 
 .stats span {
   margin-right: 40px;
 }
 
+.name {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.bio {
+  font-size: 1.6rem;
+}
+
 .posts {
-  margin-top: 20px;
+  width: 100%;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  margin: auto;
 }
 
 .post {
   width: 300px;
   height: 300px;
   object-fit: cover;
-  margin-right: 6px;
+  margin: 0 4px 4px 0;
+}
+
+@media only screen and (max-width: 576px) {
+  .posts {
+    width: 304px;
+  }
+}
+
+@media only screen and (min-width: 576px) {
+  .posts {
+    width: 304px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .posts {
+    width: 608px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .posts {
+    width: 608px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .posts {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .posts {
+    width: 100%;
+  }
 }

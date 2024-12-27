@@ -79,13 +79,13 @@
 
   &:hover {
     cursor: pointer;
-    opacity: 0.9;
+    opacity: 0.8;
   }
 }
 
 .like-icon-active {
   color: #ff3040;
-  animation: liking 0.8s ease-in-out;
+  animation: liking 0.4s ease-in-out;
 }
 
 @keyframes liking {
