@@ -5,6 +5,7 @@ import Tippy from '@tippyjs/react/headless';
 import { GoHome, GoHomeFill } from 'react-icons/go';
 import { PiUserCheck, PiUserCheckFill } from 'react-icons/pi';
 import { PiCameraPlus, PiCameraPlusFill } from 'react-icons/pi';
+import { PiChatTextLight, PiChatTextFill } from 'react-icons/pi';
 import { CgDetailsMore } from 'react-icons/cg';
 
 import Menu from '../Menu';
@@ -45,6 +46,12 @@ const SidebarSmall = () => {
           to={config.routes.createPost}
           icon={<PiCameraPlus className={cx('icon')} />}
           activeIcon={<PiCameraPlusFill className={cx('icon')} />}
+        />
+        <MenuItem
+          title=""
+          to={config.routes.chat}
+          icon={<PiChatTextLight className={cx('icon')} />}
+          activeIcon={<PiChatTextFill className={cx('icon')} />}
         />
         <MenuItem
           title=""

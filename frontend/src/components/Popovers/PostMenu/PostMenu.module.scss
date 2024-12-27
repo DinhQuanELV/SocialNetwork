@@ -1,0 +1,37 @@
+.wrapper {
+  width: 200px;
+  border-radius: 8px;
+  background-color: var(--secondary-dark-background);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.buttons {
+  padding: 8px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--button-height-sm);
+  border-radius: var(--border-radius-btn);
+  color: var(--text);
+  background-color: var(--secondary-dark-background);
+  outline: none;
+  border: none;
+
+  span {
+    font-size: 1.6rem;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--hover-background);
+  }
+}
+
+.icon {
+  margin: 0 8px;
+  width: 16px;
+  height: 16px;
+}

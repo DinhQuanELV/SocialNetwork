@@ -2,11 +2,17 @@
   width: 480px;
 }
 
+.post {
+  margin: 16px 0;
+  background-color: var(--secondary-dark-background);
+  border-radius: 8px;
+}
+
 .info {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-bottom: 12px;
+  padding: 12px;
 }
 
 .avatar {
@@ -19,6 +25,39 @@
 
 .name {
   font-size: 1.4rem;
+  margin: 0;
+}
+
+.name-link {
+  text-decoration: none;
+  color: var(--primary-text);
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.menu {
+  margin-left: auto;
+}
+
+.menu-btn {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--text);
+}
+
+.menu-icon {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border-radius: 50%;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--hover-background);
+  }
 }
 
 .image {
@@ -28,4 +67,47 @@
 .activity {
   display: flex;
   flex-direction: column;
+  padding: 12px;
+}
+
+.like-icon,
+.like-icon-active,
+.comment-icon {
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+}
+
+.like-icon-active {
+  color: #ff3040;
+  animation: liking 0.8s ease-in-out;
+}
+
+@keyframes liking {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.likes {
+  margin-top: 8px;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.caption {
+  margin-top: 4px;
+  font-size: 1.6rem;
+  font-weight: 600;
 }

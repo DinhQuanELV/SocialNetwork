@@ -1,0 +1,52 @@
+.comments {
+  max-height: 400px;
+  overflow-y: scroll;
+  margin: 8px;
+}
+
+.name,
+.comment {
+  font-size: 1.6rem;
+  font-weight: 300;
+}
+
+.name {
+  margin-right: 8px;
+  font-weight: 600;
+}
+
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 40px 8px 8px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: var(--primary-dark-background);
+}
+
+.btn {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  border: none;
+  outline: none;
+  border-radius: var(--border-radius-btn);
+  background-color: transparent;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+}
