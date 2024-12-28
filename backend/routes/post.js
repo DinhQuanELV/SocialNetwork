@@ -31,9 +31,9 @@ router.get('/following', requireLogin, (req, res) => {
     });
 });
 
-router.post('/createpost', requireLogin, (req, res) => {
+router.post('/createPost', requireLogin, (req, res) => {
   const { title, pic } = req.body;
-  if (!title || !pic) {
+  if (!pic) {
     return res.status(422).json({ error: 'Please add all the fields' });
   }
   req.user.password = undefined;

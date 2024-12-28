@@ -7,33 +7,28 @@
 }
 
 .loader {
-  margin: auto;
-  width: 20px;
-  height: 20px;
+  width: 40px;
   aspect-ratio: 1;
   display: grid;
-  mask: conic-gradient(from 15deg, #0000, #000);
-  animation: l26 1s infinite steps(12);
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-right-color: var(--primary);
+  animation: l15 1s infinite linear;
 }
-.loader,
-.loader:before,
-.loader:after {
-  background: radial-gradient(closest-side at 50% 12.5%, #c0c1c1 96%, #0000) 50%
-      0/20% 80% repeat-y,
-    radial-gradient(closest-side at 12.5% 50%, #c0c1c1 96%, #0000) 0 50%/80% 20%
-      repeat-x;
-}
-.loader:before,
-.loader:after {
+.loader::before,
+.loader::after {
   content: '';
   grid-area: 1/1;
-  transform: rotate(30deg);
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+  animation: l15 2s infinite;
 }
-.loader:after {
-  transform: rotate(60deg);
+.loader::after {
+  margin: 8px;
+  animation-duration: 3s;
 }
-
-@keyframes l26 {
+@keyframes l15 {
   100% {
     transform: rotate(1turn);
   }

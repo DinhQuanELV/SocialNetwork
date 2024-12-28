@@ -6,7 +6,7 @@ const Post = new Schema(
   {
     title: {
       type: String,
-      required: true,
+      default: '',
     },
     image: {
       type: String,

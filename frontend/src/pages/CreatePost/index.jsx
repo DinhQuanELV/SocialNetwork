@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
+
 import styles from './CreatePost.module.scss';
+import Loader from '~/components/Animations/Loader';
 
 const cx = classNames.bind(styles);
 
@@ -9,11 +11,12 @@ const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
   const [url, setUrl] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (url) {
-      fetch('/createpost', {
+      fetch('/createPost', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,6 +29,7 @@ const CreatePost = () => {
       })
         .then((res) => res.json())
         .then((data) => {
+          setIsLoading(false);
           if (data.error) {
             console.log(data.error);
           } else {
@@ -33,12 +37,20 @@ const CreatePost = () => {
           }
         })
         .catch((err) => {
+          setIsLoading(false);
           console.log(err);
         });
     }
   }, [url, navigate, title]);
 
+  useEffect(() => {
+    return () => {
+      image && URL.revokeObjectURL(image.preview);
+    };
+  }, [image]);
+
   const handleCreatePost = () => {
+    setIsLoading(true);
     const data = new FormData();
     data.append('file', image);
     data.append('upload_preset', 'SocialMedia');
@@ -52,23 +64,57 @@ const CreatePost = () => {
         setUrl(data.url);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(err);
       });
   };
 
+  const handlePreviewImage = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      file.preview = URL.createObjectURL(file);
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  };
+
   return (
     <div className={cx('wrapper')}>
-      <input
-        type="text"
-        placeholder="title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <div className={cx('btn')}>
-        <span>Select from computer</span>
-        <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-      </div>
-      <button onClick={handleCreatePost}>Share</button>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className={cx('body')}>
+          <input
+            className={cx('caption')}
+            type="text"
+            placeholder="Write a caption..."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <div className={cx('upload-btn')}>
+            <input
+              className={cx('upload-file')}
+              type="file"
+              onChange={handlePreviewImage}
+            />
+            {image && (
+              <img
+                className={cx('img-preview')}
+                src={image.preview}
+                alt="preview"
+              />
+            )}
+          </div>
+          <span>
+            {image && (
+              <button className={cx('share-btn')} onClick={handleCreatePost}>
+                Share
+              </button>
+            )}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
