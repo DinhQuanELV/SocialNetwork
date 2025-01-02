@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 
 const Chat = new Schema(
   {
-    members: [],
+    members: {
+      type: Array,
+      required: true,
+    },
   },
   {
     timestamps: true,

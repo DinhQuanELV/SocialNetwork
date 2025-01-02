@@ -4,9 +4,15 @@ const Schema = mongoose.Schema;
 
 const Message = new Schema(
   {
-    chatId: String,
-    senderId: String,
-    text: String,
+    chatId: {
+      type: String,
+    },
+    senderId: {
+      type: String,
+    },
+    message: {
+      type: String,
+    },
   },
   {
     timestamps: true,

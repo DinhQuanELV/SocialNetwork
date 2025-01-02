@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
 
 const Chat = require('../models/chat');
+const User = require('../models/user');
 
 class ChatController {
   // [POST] /chat/create
   create(req, res, next) {
-    const { firstId, secondId } = req.body;
-    Chat.findOne({ members: { $all: [firstId, secondId] } })
+    const { senderId, receiverId } = req.body;
+    Chat.findOne({ members: { $all: [senderId, receiverId] } })
       .then((chat) => {
         if (chat) {
           res.status(200).json(chat);
         } else {
           const newChat = new Chat({
-            members: [firstId, secondId],
+            members: [senderId, receiverId],
           });
           return newChat.save();
         }
@@ -30,7 +31,23 @@ class ChatController {
       members: { $in: [userId] },
     })
       .then((chats) => {
-        res.status(200).json(chats);
+        return Promise.all(
+          chats.map((chat) => {
+            const receiverId = chat.members.find((member) => member !== userId);
+            return User.findById(receiverId).then((user) => {
+              return {
+                user: {
+                  name: user.name,
+                  username: user.username,
+                },
+                chatId: chat._id,
+              };
+            });
+          }),
+        );
+      })
+      .then((chatUserData) => {
+        res.status(200).json(chatUserData);
       })
       .catch(next);
   }
