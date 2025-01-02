@@ -33,7 +33,7 @@ const DefaultLayout = ({ children }) => {
         >
           <SidebarSmall />
         </Col>
-        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="p-0">
+        <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12} className="pe-0">
           <div className={cx('content')}>{children}</div>
         </Col>
       </Row>

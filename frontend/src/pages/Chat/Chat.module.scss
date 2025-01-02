@@ -1,0 +1,167 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+.chat-list {
+  width: 320px;
+  border-right: 1px solid var(--line);
+  padding: 8px;
+  overflow-y: scroll;
+}
+
+.chat-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 8px;
+  border-radius: var(--border-radius-btn);
+  transition: background-color ease-in-out 200ms;
+
+  &:hover {
+    cursor: pointer;
+    background-color: var(--hover-background);
+  }
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+
+.info {
+  margin: 0;
+  padding: 4px 8px;
+}
+
+.name {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.status {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.chat-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--primary-dark-background);
+  z-index: 999;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px;
+}
+
+.my-message,
+.user-message {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.my-message {
+  justify-content: end;
+}
+
+.user-message {
+  justify-content: start;
+}
+
+.message-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.content {
+  max-width: 320px;
+  word-wrap: break-word;
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding: 8px 16px;
+  border-radius: 16px;
+  background-color: #303030;
+}
+
+.footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  height: 72px;
+  padding: 16px 8px;
+  background-color: var(--primary-dark-background);
+}
+
+.emoji {
+  padding: 8px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+}
+
+.emoji-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.message-input {
+  position: relative;
+  width: 100%;
+  padding: 8px 16px;
+  border-radius: 16px;
+  border: none;
+  outline: none;
+  color: var(--text);
+  background-color: var(--input-background);
+}
+
+.send-btn {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.send-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text);
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+}
