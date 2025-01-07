@@ -38,7 +38,7 @@ const Post = () => {
   };
 
   useEffect(() => {
-    fetch('/allpost', {
+    fetch('/post/showAll', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('jwt'),
@@ -51,7 +51,7 @@ const Post = () => {
   }, []);
 
   const handleLikePost = (id) => {
-    fetch('/like', {
+    fetch('/post/like', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ const Post = () => {
   };
 
   const handleUnLikePost = (id) => {
-    fetch('/unlike', {
+    fetch('/post/unlike', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -100,6 +100,27 @@ const Post = () => {
       .catch((err) => console.log(err));
   };
 
+  const handleRemovePost = (postId) => {
+    fetch(`/post/remove/${postId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('jwt'),
+      },
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setData((prev) => {
+          return prev.filter((p) => p._id !== postId);
+        });
+      });
+  };
+
+  const handleEditPost = (updatedPost) => {
+    setData((prev) => {
+      return prev.map((p) => (p._id === updatedPost._id ? updatedPost : p));
+    });
+  };
+
   return (
     <div className={cx('wrapper')}>
       {Array.isArray(data) &&
@@ -118,16 +139,16 @@ const Post = () => {
                   >
                     <img
                       className={cx('avatar')}
-                      src={state && state.avatar && state.avatar}
+                      src={post.postedBy.avatar}
                       alt="avatar"
                     />
-                    {post.postedBy.name}
+                    {post.postedBy.username}
                   </Link>
                 </h4>
-                {state && state._id && post.postedBy._id === state._id && (
+                {post?.postedBy?._id === state?._id && (
                   <div className={cx('menu')}>
                     <Tippy
-                      visible={visibleMenuPostId === post._id}
+                      visible={visibleMenuPostId === post?._id}
                       onClickOutside={() => setVisibleMenuPostId(null)}
                       interactive
                       placement="bottom"
@@ -138,7 +159,12 @@ const Post = () => {
                           {...attrs}
                           onClick={() => setVisibleMenuPostId(null)}
                         >
-                          <PostMenu />
+                          <PostMenu
+                            postId={post._id}
+                            title={post.title}
+                            onDelete={() => handleRemovePost(post._id)}
+                            onEdit={handleEditPost}
+                          />
                         </div>
                       )}
                     >
@@ -165,12 +191,13 @@ const Post = () => {
                       <FaRegHeart className={cx('like-icon')} />
                     </span>
                   )}
+                  <span className={cx('likes')}>{post.likes.length}</span>
                   <FaRegComment
                     className={cx('comment-icon')}
                     onClick={() => handleShow(post)}
                   />
+                  <span className={cx('comments')}>{post.comments.length}</span>
                 </div>
-                <span className={cx('likes')}>{post.likes.length} likes</span>
                 <span className={cx('caption')}>{post.title}</span>
               </div>
             </div>
