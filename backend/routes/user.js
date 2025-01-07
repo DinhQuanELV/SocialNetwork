@@ -9,5 +9,6 @@ router.put('/follow', requireLogin, UserController.follow);
 router.put('/unfollow', requireLogin, UserController.unfollow);
 router.put('/updateAvatar', requireLogin, UserController.updateAvatar);
 router.post('/search', UserController.search);
+router.get('/show/all/:userId', requireLogin, UserController.showAll);
 
 module.exports = router;
