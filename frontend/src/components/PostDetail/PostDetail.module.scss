@@ -4,15 +4,29 @@
   margin: 8px;
 }
 
-.name,
+.comment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.username {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
 .comment {
   font-size: 1.6rem;
   font-weight: 300;
-}
-
-.name {
-  margin-right: 8px;
-  font-weight: 600;
 }
 
 .form {
