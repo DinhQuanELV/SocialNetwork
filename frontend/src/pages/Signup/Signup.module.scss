@@ -63,6 +63,11 @@
   outline: none;
   border: none;
   border-radius: 8px;
+
+  &::-ms-reveal,
+  ::-ms-clear {
+    display: none;
+  }
 }
 
 .password-input {
@@ -81,6 +86,10 @@
     cursor: pointer;
     opacity: 0.9;
   }
+}
+
+.error {
+  color: var(--error);
 }
 
 .signup-btn {
