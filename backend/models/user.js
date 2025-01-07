@@ -20,7 +20,7 @@ const User = new Schema(
     },
     password: {
       type: String,
-      required: true,
+      default: null,
     },
     avatar: {
       type: String,
