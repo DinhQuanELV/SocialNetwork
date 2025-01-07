@@ -36,7 +36,7 @@ const UserProfile = () => {
   }, [userid, isFollow]);
 
   const handleFollowUser = (userid) => {
-    fetch('/follow', {
+    fetch('/user/follow', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ const UserProfile = () => {
   };
 
   const handleUnfollowUser = (userid) => {
-    fetch('/unfollow', {
+    fetch('/user/unfollow', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

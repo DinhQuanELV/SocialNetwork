@@ -41,7 +41,7 @@ const Search = ({ title }) => {
 
     setLoading(true);
 
-    fetch('/searchUsers', {
+    fetch('/user/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

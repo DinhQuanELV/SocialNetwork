@@ -14,7 +14,7 @@ const Profile = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    fetch('/myPost', {
+    fetch('/post/myPost', {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('jwt'),

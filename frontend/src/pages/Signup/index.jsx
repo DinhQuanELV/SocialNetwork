@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { FcGoogle } from 'react-icons/fc';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 import styles from './Signup.module.scss';
@@ -14,12 +13,13 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    fetch('/signup', {
+    fetch('/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const Signup = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          alert(data.error);
+          setError(data.error);
         } else {
           navigate('/login');
         }
@@ -47,11 +47,6 @@ const Signup = () => {
   return (
     <div className={cx('wrapper')}>
       <h1 className={cx('logo')}>dqelv</h1>
-      <button className={cx('google-btn')}>
-        <FcGoogle />
-        <span>Log in with Google</span>
-      </button>
-      <span className={cx('login-with')}>Or</span>
       <form className={cx('form')}>
         <input
           className={cx('input')}
@@ -91,6 +86,7 @@ const Signup = () => {
             </span>
           )}
         </div>
+        <span className={cx('error')}>{error}</span>
         <button
           className={cx('signup-btn')}
           type="submit"

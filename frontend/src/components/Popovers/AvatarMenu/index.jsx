@@ -37,7 +37,7 @@ const AvatarMenu = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          fetch('/updateAvatar', {
+          fetch('/user/updateAvatar', {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

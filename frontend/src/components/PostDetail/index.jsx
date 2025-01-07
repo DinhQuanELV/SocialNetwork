@@ -11,7 +11,7 @@ const PostDetail = ({ post, setData }) => {
   const inputRef = useRef(null);
 
   const handleCreateComment = (text, postId) => {
-    fetch('/comment', {
+    fetch('/post/comment', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -42,9 +42,16 @@ const PostDetail = ({ post, setData }) => {
       <div className={cx('comments')}>
         {comments.map((comment) => {
           return (
-            <h6 key={comment._id}>
-              <span className={cx('name')}>{comment.postedBy.name}</span>
-              <span className={cx('comment')}>{comment.text}</span>
+            <h6 className={cx('comment')} key={comment._id}>
+              <img
+                className={cx('avatar')}
+                src={comment.postedBy.avatar}
+                alt="avatar"
+              />
+              <span className={cx('username')}>
+                {comment.postedBy.username}
+              </span>
+              <span className={cx('content')}>{comment.text}</span>
             </h6>
           );
         })}
