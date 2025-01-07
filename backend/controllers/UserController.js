@@ -115,9 +115,29 @@ class UserController {
       .then((user) => {
         res.json({ user });
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(next);
+  }
+
+  // [GET] /user/showAllUsers
+  showAll(req, res, next) {
+    const userId = req.params.userId;
+    User.find({ _id: { $ne: userId } })
+      .lean()
+      .then((users) => {
+        return Promise.all(
+          users.map((user) => {
+            return {
+              receiverId: user._id,
+              username: user.username,
+              avatar: user.avatar,
+            };
+          }),
+        );
+      })
+      .then((userList) => {
+        res.json(userList);
+      })
+      .catch(next);
   }
 }
 

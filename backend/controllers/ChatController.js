@@ -25,7 +25,7 @@ class ChatController {
   }
 
   //   [GET] /chat/:userId
-  findUserChats(req, res, next) {
+  show(req, res, next) {
     const userId = req.params.userId;
     Chat.find({
       members: { $in: [userId] },
@@ -37,8 +37,9 @@ class ChatController {
             return User.findById(receiverId).then((user) => {
               return {
                 user: {
-                  name: user.name,
+                  receiverId: user._id,
                   username: user.username,
+                  avatar: user.avatar,
                 },
                 chatId: chat._id,
               };
@@ -48,18 +49,6 @@ class ChatController {
       })
       .then((chatUserData) => {
         res.status(200).json(chatUserData);
-      })
-      .catch(next);
-  }
-
-  //   [GET] /chat/find/:firstUserId/:secondUserId
-  findChat(req, res, next) {
-    const { firstId, secondId } = req.params;
-    Chat.findOne({
-      members: { $all: [firstId, secondId] },
-    })
-      .then((chat) => {
-        res.status(200).json(chat);
       })
       .catch(next);
   }

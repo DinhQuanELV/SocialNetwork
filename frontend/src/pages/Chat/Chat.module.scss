@@ -11,6 +11,42 @@
   overflow-y: scroll;
 }
 
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 8px;
+}
+
+.suggest {
+  display: flex;
+  flex-direction: row;
+  overflow-x: scroll;
+}
+
+.suggest-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+}
+
+.suggest-username {
+  font-size: 1.4rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  width: 64px;
+  margin: 0 0 8px 0;
+}
+
 .chat-item {
   display: flex;
   flex-direction: row;
@@ -36,7 +72,7 @@
   padding: 4px 8px;
 }
 
-.name {
+.username {
   font-size: 1.6rem;
   font-weight: 600;
   margin: 0;
@@ -52,7 +88,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  justify-content: space-between;
 }
 
 .header {
@@ -74,21 +110,31 @@
   flex-direction: column;
   width: 100%;
   padding: 8px;
+  margin-bottom: auto;
+  overflow-y: scroll;
 }
 
-.my-message,
-.user-message {
+.sender-message,
+.receiver-message {
   display: flex;
   align-items: center;
   margin-bottom: 4px;
 }
 
-.my-message {
+.sender-message {
   justify-content: end;
+
+  .content {
+    background-color: var(--primary);
+  }
 }
 
-.user-message {
+.receiver-message {
   justify-content: start;
+
+  .content {
+    background-color: #303030;
+  }
 }
 
 .message-avatar {
@@ -105,7 +151,6 @@
   font-weight: 400;
   padding: 8px 16px;
   border-radius: 16px;
-  background-color: #303030;
 }
 
 .footer {
@@ -118,6 +163,7 @@
   height: 72px;
   padding: 16px 8px;
   background-color: var(--primary-dark-background);
+  z-index: 999;
 }
 
 .emoji {
@@ -132,6 +178,10 @@
 .emoji-icon {
   width: 24px;
   height: 24px;
+}
+
+.message-form {
+  width: 100%;
 }
 
 .message-input {
