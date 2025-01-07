@@ -8,32 +8,34 @@ import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 import styles from './Login.module.scss';
 import { UserContext } from '~/App';
 import images from '~/assets/images';
+import { useGoogleLogin } from '@react-oauth/google';
 
 const cx = classNames.bind(styles);
 
 const Login = () => {
   const { dispatch } = useContext(UserContext);
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    fetch('/login', {
+    fetch('/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email,
+        username,
         password,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          alert(data.error);
+          setError(data.error);
         } else {
           localStorage.setItem('jwt', data.token);
           localStorage.setItem('user', JSON.stringify(data.user));
@@ -49,6 +51,30 @@ const Login = () => {
   const handleTogglePassword = () => {
     setShowPassword((showPassword) => !showPassword);
   };
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      console.log(tokenResponse);
+
+      fetch('/auth/googleLogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          token: tokenResponse.access_token,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          localStorage.setItem('jwt', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          dispatch({ type: 'USER', payload: data.user });
+          navigate('/');
+        })
+        .catch((err) => console.log(err));
+    },
+  });
 
   return (
     <Container fluid className={cx('wrapper')}>
@@ -70,10 +96,10 @@ const Login = () => {
             <form className={cx('form')}>
               <input
                 className={cx('input')}
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <div className={cx('password-input')}>
                 <input
@@ -92,6 +118,7 @@ const Login = () => {
                   </span>
                 )}
               </div>
+              <span className={cx('error')}>{error}</span>
               <button
                 className={cx('login-btn')}
                 type="submit"
@@ -101,7 +128,7 @@ const Login = () => {
               </button>
             </form>
             <span className={cx('login-with')}>Or</span>
-            <button className={cx('google-btn')}>
+            <button onClick={handleGoogleLogin} className={cx('google-btn')}>
               <FcGoogle />
               <span>Log in with Google</span>
             </button>

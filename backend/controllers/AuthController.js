@@ -12,7 +12,7 @@ class AuthController {
   signup(req, res, next) {
     const { name, username, email, password } = req.body;
     if (!email || !username || !password || !name) {
-      return res.status(400).json({ error: 'Please type all the fields!' });
+      return res.status(400).json({ error: 'Please fill all the fields!' });
     }
     if (!validator.isEmail(email)) {
       return res.status(400).json({ error: 'Email is not valid!' });
@@ -67,20 +67,24 @@ class AuthController {
   }
 
   login(req, res, next) {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(422).json({ error: 'Please fill email or password!' });
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(422)
+        .json({ error: 'Please fill username and password!' });
     }
-    User.findOne({ email: email })
+    User.findOne({ username: username })
       .then((savedUser) => {
         if (!savedUser) {
-          return res.status(422).json({ error: 'Invalid email or password!' });
+          return res
+            .status(422)
+            .json({ error: 'Invalid username or password!' });
         }
         bcrypt.compare(password, savedUser.password).then((isMatchPassword) => {
           if (!isMatchPassword) {
             return res
               .status(422)
-              .json({ error: 'Invalid email or password!' });
+              .json({ error: 'Invalid username or password!' });
           } else {
             const token = jwt.sign(
               {
@@ -116,6 +120,62 @@ class AuthController {
         });
       })
       .catch(next);
+  }
+
+  // [POST] /auth/googleLogin
+  async googleLogin(req, res, next) {
+    try {
+      const token = req.body.token;
+      if (!token) {
+        return res.status(401).json({ error: 'No token provided' });
+      }
+      const response = await fetch(
+        'https://www.googleapis.com/oauth2/v1/userinfo?alt=json',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const userProfile = await response.json();
+
+      const existingUser = await User.findOne({ email: userProfile.email });
+      if (existingUser) {
+        return res.json({
+          token: jwt.sign(
+            {
+              _id: existingUser._id,
+            },
+            jwtSecretKey,
+            { algorithm: 'HS256' },
+          ),
+          user: existingUser,
+        });
+      }
+
+      const _userInfo = {
+        name: userProfile.name,
+        email: userProfile.email,
+        avatar: userProfile.picture,
+        username: userProfile.email.split('@')[0],
+      };
+
+      const savedUser = await new User({ ..._userInfo }).save();
+      const accessToken = jwt.sign(
+        {
+          _id: savedUser._id,
+        },
+        jwtSecretKey,
+        { algorithm: 'HS256' },
+      );
+      return res.status(201).json({
+        token: accessToken,
+        user: savedUser,
+      });
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 

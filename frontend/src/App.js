@@ -5,6 +5,7 @@ import { publicRoutes, privateRoutes } from '~/routes';
 import { DefaultLayout } from '~/Layouts';
 import { initState, reducer } from '~/reducers/userReducer';
 import RequireAuthentication from '~/components/Authentication/RequireAuthentication';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 export const UserContext = createContext();
 
@@ -19,66 +20,68 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ state, dispatch }}>
-      <Router
-        future={{
-          v7_relativeSplatPath: true,
-          v7_startTransition: true,
-        }}
-      >
-        <div className="App">
-          <Routes>
-            {publicRoutes.map((route, index) => {
-              const Page = route.component;
-              let Layout = DefaultLayout;
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_KEY}>
+      <UserContext.Provider value={{ state, dispatch }}>
+        <Router
+          future={{
+            v7_relativeSplatPath: true,
+            v7_startTransition: true,
+          }}
+        >
+          <div className="App">
+            <Routes>
+              {publicRoutes.map((route, index) => {
+                const Page = route.component;
+                let Layout = DefaultLayout;
 
-              if (route.layout) {
-                Layout = route.layout;
-              } else if (route.layout === null) {
-                Layout = Fragment;
-              }
+                if (route.layout) {
+                  Layout = route.layout;
+                } else if (route.layout === null) {
+                  Layout = Fragment;
+                }
 
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <Layout>
-                      <Page />
-                    </Layout>
-                  }
-                />
-              );
-            })}
-
-            {privateRoutes.map((route, index) => {
-              const Page = route.component;
-              let Layout = DefaultLayout;
-
-              if (route.layout) {
-                Layout = route.layout;
-              } else if (route.layout === null) {
-                Layout = Fragment;
-              }
-
-              return (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <RequireAuthentication>
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={
                       <Layout>
                         <Page />
                       </Layout>
-                    </RequireAuthentication>
-                  }
-                />
-              );
-            })}
-          </Routes>
-        </div>
-      </Router>
-    </UserContext.Provider>
+                    }
+                  />
+                );
+              })}
+
+              {privateRoutes.map((route, index) => {
+                const Page = route.component;
+                let Layout = DefaultLayout;
+
+                if (route.layout) {
+                  Layout = route.layout;
+                } else if (route.layout === null) {
+                  Layout = Fragment;
+                }
+
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                      <RequireAuthentication>
+                        <Layout>
+                          <Page />
+                        </Layout>
+                      </RequireAuthentication>
+                    }
+                  />
+                );
+              })}
+            </Routes>
+          </div>
+        </Router>
+      </UserContext.Provider>
+    </GoogleOAuthProvider>
   );
 }
 
