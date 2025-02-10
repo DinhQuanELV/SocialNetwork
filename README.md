@@ -14,3 +14,9 @@ User can use Sign up to create new account or use Google to Log in
 
 ## Chat
 ![chat](https://github.com/user-attachments/assets/139ab05e-b41a-4e56-8de1-c7cb017ff373)
+
+## Profile
+![profile](https://github.com/user-attachments/assets/a2709cc8-2b73-4142-bbd3-f5fe37111329)
+
+## Search
+![search](https://github.com/user-attachments/assets/a3d59c4f-8036-40c9-b8c4-53822039c866)
