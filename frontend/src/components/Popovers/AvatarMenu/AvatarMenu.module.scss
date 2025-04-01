@@ -5,6 +5,41 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
 }
 
+.upload-file {
+  &::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+
+  &:before {
+    content: 'Select from your computer';
+    display: inline-block;
+    padding: 12px 24px;
+    margin: 12px 96px;
+    background: var(--primary);
+    border-radius: var(--border-radius-btn);
+    white-space: nowrap;
+    font-weight: 600;
+    font-size: 1.4rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    user-select: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+    opacity: 0.9;
+  }
+}
+
+.img-preview {
+  width: 300px;
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 0 96px;
+}
+
 .buttons {
   padding: 8px;
 }

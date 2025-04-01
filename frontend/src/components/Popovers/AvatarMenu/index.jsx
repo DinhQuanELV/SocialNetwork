@@ -25,6 +25,12 @@ const AvatarMenu = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [image]);
 
+  useEffect(() => {
+    return () => {
+      image && URL.revokeObjectURL(image.preview);
+    };
+  }, [image]);
+
   const handleUpdateAvatar = () => {
     if (image) {
       const data = new FormData();
@@ -74,6 +80,16 @@ const AvatarMenu = () => {
     setIsRemove(true);
   };
 
+  const handlePreviewImage = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      file.preview = URL.createObjectURL(file);
+      setImage(file);
+    } else {
+      setImage(null);
+    }
+  };
+
   return (
     <div className={cx('wrapper')}>
       <div className={cx('buttons')}>
@@ -91,12 +107,23 @@ const AvatarMenu = () => {
         </button>
       </div>
 
-      <Modal show={show} onHide={handleClose} data-bs-theme="dark">
+      <Modal show={show} onHide={handleClose} data-bs-theme="dark" centered>
         <Modal.Header closeButton>
           <Modal.Title>Change avatar</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+          <input
+            className={cx('upload-file')}
+            type="file"
+            onChange={handlePreviewImage}
+          />
+          {image && (
+            <img
+              className={cx('img-preview')}
+              src={image.preview}
+              alt="preview"
+            />
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
